@@ -3,17 +3,29 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Capstone.Classes
-{
+{/// <summary>
+/// represents a purchase menu of a vending machine
+/// </summary>
     public class PurchaseMenu
     {
+        /// <summary>
+        /// Vending machine which is currently running the 
+        /// purchase menu
+        /// </summary>
         public VendingMachine VM { get; set; }
 
+        /// <summary>
+        /// constructor for a purchase menu
+        /// </summary>
+        /// <param name="vm"></param>
         public PurchaseMenu(VendingMachine vm)
         {
             this.VM = vm;
             this.Display();
         }
-
+        /// <summary>
+        /// displays the purchase menu itself 
+        /// </summary>
         public void Display()
         {
             while (true)
@@ -37,9 +49,14 @@ namespace Capstone.Classes
                     this.GetProduct();
                 }
                 else if (choice == "3")
+                  //current vending machine calls FinishTransaction
+
                 {
 
                     this.VM.FinishTransaction();
+                    //calling dispense message method and passing in
+                    //the products purchased info for this particular
+                    //vending machine
                     this.DispenseMessage(this.VM.productsPurchased);
 
                     break;
@@ -54,7 +71,9 @@ namespace Capstone.Classes
                 }
             }
         }
-
+        //menu for method to get money desposited by the user, 
+        //passing in the menu selection number, set up within
+        //a while loop (ends with user selection action)
         public void GetMoney()
         {
             while (true)
@@ -96,7 +115,7 @@ namespace Capstone.Classes
                 }
             }
         }
-
+        //method to get product's slotID from user
         public void GetProduct()
         {
             Console.Clear();
@@ -145,8 +164,11 @@ namespace Capstone.Classes
             this.VM.GiveProduct(choice);
             return;
         }
+        //method creates the message that displays a fun purchase-related message 
+        //after purchase is made.  Pass in a list of Product Class, named products
         public void DispenseMessage(List<Product> products)
-        {
+        {//loop through list, checking for produc.Type property and 
+            //then run through switch statement to assign proper type-specfic message.
             foreach (Product product in products)
             {
                 switch (product.Type.ToLower())
@@ -174,6 +196,7 @@ namespace Capstone.Classes
                         break;
                 }
             }
+            //empty out the list for this purchase
             this.VM.productsPurchased.Clear();
             Console.ReadLine();
 
