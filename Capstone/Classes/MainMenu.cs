@@ -6,6 +6,7 @@ namespace Capstone.Classes
 {
     public class MainMenu
     {
+        public VendingMachine VM { get; set; }
         public Dictionary<string, Product> Inventory { get; set; }
         public void Display()
         {
@@ -17,21 +18,21 @@ namespace Capstone.Classes
         }
         public void DisplayProducts()
         {
-            foreach (string key in this.Inventory.Keys)
+            foreach (string key in this.VM.Inventory.Keys)
             {
                 if (this.Inventory[key].Quantity > 0)
                 {
-                    Console.WriteLine($"{key} - {this.Inventory[key].Name} - {this.Inventory[key].Price} - {this.Inventory[key].Quantity}");
+                    Console.WriteLine($"{key} - {this.VM.Inventory[key].Name} - {this.VM.Inventory[key].Price} - {this.VM.Inventory[key].Quantity}");
                 }
                 else
                 {
-                    Console.WriteLine($"{key} - {this.Inventory[key].Name} - {this.Inventory[key].Price} -  SOLD OUT");
+                    Console.WriteLine($"{key} - {this.VM.Inventory[key].Name} - {this.VM.Inventory[key].Price} -  SOLD OUT");
                 }
             }
         }
         public MainMenu(VendingMachine vm)
         {
-            this.Inventory = vm.Inventory;
+            this.VM = vm;
         }
     }
 }

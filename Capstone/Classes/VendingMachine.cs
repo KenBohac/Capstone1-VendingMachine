@@ -47,6 +47,7 @@ namespace Capstone.Classes
             if (this.CurrentBalance >= this.Inventory[slotID].Price)
             {
                 this.Inventory[slotID].Quantity--;
+                this.CurrentBalance -= this.Inventory[slotID].Price;
                 this.LogAction(this.Inventory[slotID].Name, this.Inventory[slotID].Price);
             }
         }
