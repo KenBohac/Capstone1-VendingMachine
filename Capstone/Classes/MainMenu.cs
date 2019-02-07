@@ -13,9 +13,34 @@ namespace Capstone.Classes
             ///Main Menu presented to User
             ///Don't forget to add Matt's Umbrella Corp. Word Art
             ///
-            Console.WriteLine("(1) Display Vending Machine Items");
-            Console.WriteLine("(2) Purchase");
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("(1) Display Vending Machine Items");
+                Console.WriteLine("(2) Purchase");
+               
+                Console.WriteLine("> Pick One");
+                
+                string choice = Console.ReadLine();
+
+                if (choice == "1")
+                {
+                    this.DisplayProducts();
+                }
+
+               else if (choice == "2")
+                {
+                    PurchaseMenu pm = new PurchaseMenu(this.VM);
+                }
+               
+                else
+                {
+                    Console.WriteLine("Invalid Input. Try Again");
+                }
+            }
+
         }
+
         public void DisplayProducts()
         {
             foreach (string key in this.VM.Inventory.Keys)
@@ -33,6 +58,7 @@ namespace Capstone.Classes
         public MainMenu(VendingMachine vm)
         {
             this.VM = vm;
+            this.Display();
         }
     }
 }

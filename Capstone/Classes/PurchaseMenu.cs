@@ -11,15 +11,18 @@ namespace Capstone.Classes
         public PurchaseMenu(VendingMachine vm)
         {
             this.VM = vm;
+            this.Display();
         }
 
         public void Display()
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("(1) Feed Money");
                 Console.WriteLine("(2) Select Product");
                 Console.WriteLine("(3) Finish Transaction");
+                Console.WriteLine("(Q) Quit to Main Menu");
                 Console.WriteLine($"Current Money Provided: {this.VM.CurrentBalance:C2}");
                 Console.WriteLine("> Pick One: ");
 
@@ -37,6 +40,10 @@ namespace Capstone.Classes
                 {
                     this.VM.FinishTransaction();
                 }
+                else if(choice.ToLower()== "q")
+                {
+                    break;
+                }
                 else
                 {
                     Console.WriteLine("Invalid Input. Try Again.");
@@ -48,11 +55,13 @@ namespace Capstone.Classes
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("How much are you depositing?");
+                Console.WriteLine($"Current Money Provided: {this.VM.CurrentBalance:C2}");
                 Console.WriteLine("(1) $1.00");
                 Console.WriteLine("(2) $2.00");
-                Console.WriteLine("(3) $5.00");
-                Console.WriteLine("(4) $10.00");
+                Console.WriteLine("(5) $5.00");
+                Console.WriteLine("(10) $10.00");
                 Console.WriteLine("(Q) Quit");
 
                 string choice = Console.ReadLine();
@@ -65,11 +74,11 @@ namespace Capstone.Classes
                 {
                     this.VM.DepositMoney(2);
                 }
-                else if (choice == "3")
+                else if (choice == "5")
                 {
                     this.VM.DepositMoney(5);
                 }
-                else if (choice == "4")
+                else if (choice == "10")
                 {
                     this.VM.DepositMoney(10);
                 }

@@ -10,6 +10,12 @@ namespace Capstone.Classes
     public class VendingMachine
     {
         /// <summary>
+        /// A list of successfully purchased products in a single transaction. 
+        /// used in LogAction, generating and updating sales report, and in FinishTransaction()
+        /// </summary>
+        public List<Product> productsPurchased { get; set; }
+
+        /// <summary>
         /// Current balance used for purchases
         /// </summary>
         public decimal CurrentBalance { get; set; }
@@ -26,6 +32,7 @@ namespace Capstone.Classes
         {
             this.Inventory = this.GetStock();
             this.CurrentBalance = 0;
+            this.productsPurchased = new List<Product>();
         }
 
         /// <summary>
@@ -57,7 +64,55 @@ namespace Capstone.Classes
         /// </summary>
         public void FinishTransaction()
         {
-            // TODO FinishTransaction
+            //Calculate Change and show to console
+            int[] change = this.CalculateChange();
+            Console.Write($"Your Change: {change[0]} quarters, {change[1]} dimes, and {change[2]} nickels.");
+
+            //Set CurrentBalance to 0.00
+            this.CurrentBalance = 0;
+
+            //LogAction i. e., change given
+
+            //Adds give change msg and current balance to Log.txt output 
+            //to record action
+
+            this.LogAction("GIVE CHANGE:", this.CurrentBalance);
+
+            //Empty out/ Clear out list of all products purchased
+
+
+
+            //Based on choice, display appropriate message to console for user
+
+            foreach (Product product in productsPurchased)
+            {
+                switch (product.Type.ToLower())
+                {
+                    case "chip":
+
+                        Console.WriteLine("Crunch Crunch, Yum!");
+                        break;
+
+                    case "candy":
+
+                        Console.WriteLine("Munch Munch, Yum!");
+                        break;
+
+                    case "drink":
+
+                        Console.WriteLine("Glug Glug Yum!");
+                        break;
+                    case "gum":
+
+                        Console.WriteLine("Chew Chew Yum!");
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            this.productsPurchased.Clear();
 
         }
 
