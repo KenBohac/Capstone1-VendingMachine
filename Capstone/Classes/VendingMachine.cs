@@ -44,20 +44,24 @@ namespace Capstone.Classes
         public void DepositMoney(decimal money)
         {
             this.CurrentBalance += money;
-            this.LogAction("FEED MONEY:", money);
+            this.LogAction("FEED MONEY:", money, this.CurrentBalance );
         }
 
         /// <summary>
         /// Sets selected product ready for purchase.
         /// </summary>
         /// <param name="slotID">Slot ID of product.</param>
-        public void GiveProduct(Product product)
+        public void GiveProduct(string slotID )
         {
+            Product product = this.Inventory[slotID];
+
             if (this.CurrentBalance >= product.Price)
             {
+                string logAction = product.Name + " " + slotID.ToUpper();
+                
                 product.Quantity--;
                 this.CurrentBalance -= product.Price;
-                this.LogAction(product.Name, product.Price);
+                this.LogAction(logAction, CurrentBalance + product.Price, CurrentBalance);
                 this.productsPurchased.Add(product);
             }
         }
@@ -71,58 +75,35 @@ namespace Capstone.Classes
             int[] change = this.CalculateChange();
             Console.WriteLine();
             Console.WriteLine($"Your Change: {change[0]} quarters, {change[1]} dimes, and {change[2]} nickels.");
-            //Set CurrentBalance to 0.00
-            this.CurrentBalance = 0;
-
+           
             //LogAction i. e., change given
 
             //Adds give change msg and current balance to Log.txt output 
             //to record action
 
-            this.LogAction("GIVE CHANGE:", this.CurrentBalance);
+            this.LogAction("GIVE CHANGE:", this.CurrentBalance, 0.00M);
+            //Set CurrentBalance to 0.00
+            this.CurrentBalance = 0;
 
-            //Empty out/ Clear out list of all products purchased
-
-
-
-            //Based on choice, display appropriate message to console for user
-
-            foreach (Product product in productsPurchased)
+           
+        }
+        
+        private void LogAction(string action, decimal startingBalance, decimal endingBalance)
+        {
+            // Try-Catch to check for I/O exceptions
+            try
             {
-                switch (product.Type.ToLower())
+                using (StreamWriter sw = new StreamWriter("log.txt", true))
                 {
-                    case "chip":
+                    sw.WriteLine($"{System.DateTime.Now}  {action}  {startingBalance:C2}  {endingBalance:C2}");
 
-                        Console.WriteLine("Crunch Crunch, Yum!");
-                        break;
-
-                    case "candy":
-
-                        Console.WriteLine("Munch Munch, Yum!");
-                        break;
-
-                    case "drink":
-
-                        Console.WriteLine("Glug Glug Yum!");
-                        break;
-                    case "gum":
-
-                        Console.WriteLine("Chew Chew Yum!");
-                        break;
-
-                    default:
-                        break;
                 }
             }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Umbrella Corp.: Error with Log.txt file. Action(s) may not have been recorded.");
 
-            this.productsPurchased.Clear();
-
-            Console.ReadLine();
-        }
-
-        private void LogAction(string action, decimal amount)
-        {
-            // TODO LogAction
+            }
         }
 
         private Dictionary<string, Product> GetStock()
@@ -132,7 +113,7 @@ namespace Capstone.Classes
             // GetStock
             try
             {
-                using (StreamReader sr = new StreamReader(@"C:\Users\Matthew Dunavant\Pairs\c-module-1-capstone-team-3\Capstone\vendingmachine.csv"))
+                using (StreamReader sr = new StreamReader(@"vendingmachine.csv"))
                 {
                     while (!sr.EndOfStream)
                     {
@@ -144,7 +125,7 @@ namespace Capstone.Classes
                         string productType = slotIDNamePriceType[3];
 
                         inv.Add(slotID, new Product(productName, productPrice, productType));
-                        //Console.WriteLine($"{ slotID}: {productName}");
+                        Console.WriteLine($"{ slotID}: {productName}");
                     }
                 }
                 //Console.ReadLine();
@@ -161,9 +142,9 @@ namespace Capstone.Classes
 
         private int[] CalculateChange()
         {
-            int quarters = (int) (this.CurrentBalance / 0.25M);
-            int dimes = (int) ((this.CurrentBalance % 0.25M) / 0.1M);
-            int nickels = (int) (((this.CurrentBalance % 0.25M) % 0.1M) / 0.05M);
+            int quarters = (int)(this.CurrentBalance / 0.25M);
+            int dimes = (int)((this.CurrentBalance % 0.25M) / 0.1M);
+            int nickels = (int)(((this.CurrentBalance % 0.25M) % 0.1M) / 0.05M);
 
             return new int[] { quarters, dimes, nickels };
         }

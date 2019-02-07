@@ -43,17 +43,19 @@ namespace Capstone.Classes
 
         public void DisplayProducts()
         {
+            Console.WriteLine("SlotID" + "Snack".PadLeft(10) + "Price".PadLeft(21) + "Quantity".PadLeft(11));
             foreach (string key in this.VM.Inventory.Keys)
             {
-                if (this.Inventory[key].Quantity > 0)
+                if (this.VM.Inventory[key].Quantity > 0)
                 {
-                    Console.WriteLine($"{key} - {this.VM.Inventory[key].Name} - {this.VM.Inventory[key].Price} - {this.VM.Inventory[key].Quantity}");
+                    Console.WriteLine($"{key.ToUpper().PadLeft(4)} - {this.VM.Inventory[key].Name.PadRight (22)} - ${this.VM.Inventory[key].Price.ToString().PadRight(7):C2} - {this.VM.Inventory[key].Quantity}");
                 }
                 else
                 {
-                    Console.WriteLine($"{key} - {this.VM.Inventory[key].Name} - {this.VM.Inventory[key].Price} -  SOLD OUT");
+                    Console.WriteLine($"{key.ToUpper().PadLeft(4)} - {this.VM.Inventory[key].Name.PadRight(22)} - ${this.VM.Inventory[key].Price.ToString().PadRight(7):C2} -  SOLD OUT");
                 }
-            }
+
+            } Console.ReadLine();
         }
         public MainMenu(VendingMachine vm)
         {

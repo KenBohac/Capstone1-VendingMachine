@@ -38,10 +38,13 @@ namespace Capstone.Classes
                 }
                 else if (choice == "3")
                 {
+
                     this.VM.FinishTransaction();
+                    this.DispenseMessage(this.VM.productsPurchased);
+
                     break;
                 }
-                else if(choice.ToLower()== "q")
+                else if (choice.ToLower() == "q")
                 {
                     break;
                 }
@@ -96,6 +99,7 @@ namespace Capstone.Classes
 
         public void GetProduct()
         {
+            Console.Clear();
             Console.WriteLine("Enter a slotID for the product you would like to purchase?");
             Console.WriteLine("(Q) Quit to Purchase Menu");
 
@@ -138,8 +142,41 @@ namespace Capstone.Classes
             }
 
             // Purchase product successful
-            this.VM.GiveProduct(product);
+            this.VM.GiveProduct(choice);
             return;
+        }
+        public void DispenseMessage(List<Product> products)
+        {
+            foreach (Product product in products)
+            {
+                switch (product.Type.ToLower())
+                {
+                    case "chip":
+
+                        Console.WriteLine("Crunch Crunch, Yum!");
+                        break;
+
+                    case "candy":
+
+                        Console.WriteLine("Munch Munch, Yum!");
+                        break;
+
+                    case "drink":
+
+                        Console.WriteLine("Glug Glug Yum!");
+                        break;
+                    case "gum":
+
+                        Console.WriteLine("Chew Chew Yum!");
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            this.VM.productsPurchased.Clear();
+            Console.ReadLine();
+
         }
     }
 }
