@@ -24,7 +24,7 @@ namespace Capstone.Classes
                 Console.WriteLine("(3) Finish Transaction");
                 Console.WriteLine("(Q) Quit to Main Menu");
                 Console.WriteLine($"Current Money Provided: {this.VM.CurrentBalance:C2}");
-                Console.WriteLine("> Pick One: ");
+                Console.Write("> Pick One: ");
 
                 string choice = Console.ReadLine();
 
@@ -39,6 +39,7 @@ namespace Capstone.Classes
                 else if (choice == "3")
                 {
                     this.VM.FinishTransaction();
+                    break;
                 }
                 else if(choice.ToLower()== "q")
                 {
@@ -106,30 +107,39 @@ namespace Capstone.Classes
                 // BREAK out of GetProduct to return
                 return;
             }
-            // ELSE IF the product is in Inventory AND user has enough money to pay AND the product is in stock
-            else if (!(this.VM.Inventory[choice] == null) && this.VM.CurrentBalance >= this.VM.Inventory[choice].Price && this.VM.Inventory[choice].Quantity > 0)
+
+            // IF the product does not exist in inventory
+            if (!this.VM.Inventory.ContainsKey(choice))
             {
-                // THEN dispense product (method will also log purchase)
-                this.VM.GiveProduct(choice);
-            }
-            // ELSE IF the product is in inventory AND user does not have enough money
-            else if (!(this.VM.Inventory[choice] == null) && this.VM.CurrentBalance < this.VM.Inventory[choice].Price)
-            {
-                // PROMPT user "not enough money"
-                Console.WriteLine("Not enough money to purchase. Try again.");
-            }
-            // ELSE IF the product is in inventory AND is SOLD OUT
-            else if (!(this.VM.Inventory[choice] == null) && this.VM.Inventory[choice].Quantity < 1)
-            {
-                // PROMPT user "SOLD OUT"
-                Console.WriteLine("Item is SOLD OUT. Try again.");
-            }
-            // ELSE
-            else
-            {
-                // PROMPT user invalid input and return to purchase menu
+                // THEN prompt user invalid input
                 Console.WriteLine("Invalid slotID. Try Again");
+                Console.ReadLine();
+                return;
             }
+
+            // Set product from user input
+            Product product = this.VM.Inventory[choice];
+
+            // IF product is SOLD OUT
+            if (product.Quantity < 1)
+            {
+                // PROMPT user product SOLD OUT
+                Console.WriteLine("Item is SOLD OUT. Try again.");
+                Console.ReadLine();
+                return;
+            }
+            // IF not enough money to purchase
+            if (this.VM.CurrentBalance < product.Price)
+            {
+                // PROMPT user not enough money
+                Console.WriteLine("Not enough money to purchase. Try again.");
+                Console.ReadLine();
+                return;
+            }
+
+            // Purchase product successful
+            this.VM.GiveProduct(product);
+            return;
         }
     }
 }

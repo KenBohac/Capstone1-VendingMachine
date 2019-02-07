@@ -19,7 +19,7 @@ namespace Capstone.Classes
                 Console.WriteLine("(1) Display Vending Machine Items");
                 Console.WriteLine("(2) Purchase");
                
-                Console.WriteLine("> Pick One");
+                Console.Write("> Pick One: ");
                 
                 string choice = Console.ReadLine();
 

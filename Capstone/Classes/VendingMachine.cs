@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Capstone.Classes
@@ -30,6 +31,7 @@ namespace Capstone.Classes
         /// </summary>
         public VendingMachine()
         {
+            this.Inventory = new Dictionary<string, Product>();
             this.Inventory = this.GetStock();
             this.CurrentBalance = 0;
             this.productsPurchased = new List<Product>();
@@ -49,13 +51,14 @@ namespace Capstone.Classes
         /// Sets selected product ready for purchase.
         /// </summary>
         /// <param name="slotID">Slot ID of product.</param>
-        public void GiveProduct(string slotID)
+        public void GiveProduct(Product product)
         {
-            if (this.CurrentBalance >= this.Inventory[slotID].Price)
+            if (this.CurrentBalance >= product.Price)
             {
-                this.Inventory[slotID].Quantity--;
-                this.CurrentBalance -= this.Inventory[slotID].Price;
-                this.LogAction(this.Inventory[slotID].Name, this.Inventory[slotID].Price);
+                product.Quantity--;
+                this.CurrentBalance -= product.Price;
+                this.LogAction(product.Name, product.Price);
+                this.productsPurchased.Add(product);
             }
         }
 
@@ -66,8 +69,8 @@ namespace Capstone.Classes
         {
             //Calculate Change and show to console
             int[] change = this.CalculateChange();
-            Console.Write($"Your Change: {change[0]} quarters, {change[1]} dimes, and {change[2]} nickels.");
-
+            Console.WriteLine();
+            Console.WriteLine($"Your Change: {change[0]} quarters, {change[1]} dimes, and {change[2]} nickels.");
             //Set CurrentBalance to 0.00
             this.CurrentBalance = 0;
 
@@ -114,6 +117,7 @@ namespace Capstone.Classes
 
             this.productsPurchased.Clear();
 
+            Console.ReadLine();
         }
 
         private void LogAction(string action, decimal amount)
@@ -125,9 +129,43 @@ namespace Capstone.Classes
         {
             Dictionary<string, Product> inv = new Dictionary<string, Product>();
 
-            // TODO GetStock
+            // GetStock
+            try
+            {
+                using (StreamReader sr = new StreamReader(@"C:\Users\Matthew Dunavant\Pairs\c-module-1-capstone-team-3\Capstone\vendingmachine.csv"))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        string[] slotIDNamePriceType = sr.ReadLine().Split('|');
 
+                        string slotID = slotIDNamePriceType[0].ToLower();
+                        string productName = slotIDNamePriceType[1];
+                        decimal productPrice = decimal.Parse(slotIDNamePriceType[2]);
+                        string productType = slotIDNamePriceType[3];
+
+                        inv.Add(slotID, new Product(productName, productPrice, productType));
+                        //Console.WriteLine($"{ slotID}: {productName}");
+                    }
+                }
+                //Console.ReadLine();
+            }
+            catch (Exception ex)
+            {
+                // catch streamreader error
+                Console.WriteLine("Umbrella Corp Critical Error: Could not Load Inventory");
+                Console.WriteLine("Check correct file name and location.");
+                Console.ReadLine();
+            }
             return inv;
+        }
+
+        private int[] CalculateChange()
+        {
+            int quarters = (int) (this.CurrentBalance / 0.25M);
+            int dimes = (int) ((this.CurrentBalance % 0.25M) / 0.1M);
+            int nickels = (int) (((this.CurrentBalance % 0.25M) % 0.1M) / 0.05M);
+
+            return new int[] { quarters, dimes, nickels };
         }
     }
 }
