@@ -11,22 +11,7 @@ namespace Capstone.Classes
     public class VendingMachine
     {
         /// <summary>
-        /// A list of successfully purchased products in a single transaction. 
-        /// used in LogAction, generating and updating sales report, and in FinishTransaction()
-        /// </summary>
-        public List<Product> ProductsPurchased { get; set; }
-
-        /// <summary>
-        /// Current balance used for purchases
-        /// </summary>
-        public decimal CurrentBalance { get; set; }
-
-        /// <summary>
-        /// Dictionary associating the slot ID with a Product. Represents current inventory.
-        /// </summary>
-        public Dictionary<string, Product> Inventory { get; set; }
-
-        /// <summary>
+        /// Initializes a new instance of the <see cref="VendingMachine"/> class.
         /// Creates a new Vending Machine, obtains inventory, and sets default properties.
         /// </summary>
         public VendingMachine()
@@ -35,6 +20,22 @@ namespace Capstone.Classes
             this.CurrentBalance = 0;
             this.ProductsPurchased = new List<Product>();
         }
+
+        /// <summary>
+        /// Gets or sets a list of successfully purchased products in a single transaction.
+        /// used in LogAction, generating and updating sales report, and in FinishTransaction()
+        /// </summary>
+        public List<Product> ProductsPurchased { get; set; }
+
+        /// <summary>
+        /// Gets or sets current balance used for purchases
+        /// </summary>
+        public decimal CurrentBalance { get; set; }
+
+        /// <summary>
+        /// Gets or sets dictionary associating the slot ID with a Product. Represents current inventory.
+        /// </summary>
+        public Dictionary<string, Product> Inventory { get; set; }
 
         /// <summary>
         /// Adds money to current balance.
@@ -60,7 +61,7 @@ namespace Capstone.Classes
 
                 product.Quantity--;
                 this.CurrentBalance -= product.Price;
-                this.LogAction(logAction, CurrentBalance + product.Price, CurrentBalance);
+                this.LogAction(logAction, this.CurrentBalance + product.Price, this.CurrentBalance);
                 this.ProductsPurchased.Add(product);
             }
         }
@@ -68,14 +69,15 @@ namespace Capstone.Classes
         /// <summary>
         /// Dispense product and change, return to main menu, readies machine for next purchase.
         /// </summary>
+        /// <returns>int[] representing change due to user in quarters, dimes, and nickels</returns>
         public int[] FinishTransaction()
         {
-            //Calculate Change and show to console
+            // Calculate Change and show to console
             int[] change = this.CalculateChange();
 
-            //LogAction i. e., change given.
-            //Adds a "give change msg" and current balance to Log.txt output 
-            //to record action
+            // LogAction i. e., change given.
+            // Adds a "give change msg" and current balance to Log.txt output
+            // to record action
             this.LogAction("GIVE CHANGE:", this.CurrentBalance, 0.00M);
 
             //Set CurrentBalance to 0.00
