@@ -9,5 +9,7 @@ namespace Capstone.Classes
         void LogAction(string action, decimal startingBalance, decimal endingBalance);
 
         Dictionary<string, VendingMachineSlot> GetStock();
+
+        void UpdateSalesReport(Product product);
     }
 }
