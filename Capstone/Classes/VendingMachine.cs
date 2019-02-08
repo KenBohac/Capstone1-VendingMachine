@@ -118,7 +118,6 @@ namespace Capstone.Classes
         {
             Dictionary<string, Product> inv = new Dictionary<string, Product>();
 
-
             //read in stock from external file line by line; split up csv's, assigning to 
             //variables, and assigning them to key-value pairs in dictionary
             try

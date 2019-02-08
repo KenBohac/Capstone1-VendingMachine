@@ -10,27 +10,7 @@ namespace Capstone.Classes
     public class Product
     {
         /// <summary>
-        /// The name of the product
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// The price of the product
-        /// </summary>
-        public decimal Price { get; set; }
-
-        /// <summary>
-        /// The snack type. (chip, candy, drink, and gum)
-        /// </summary>
-        public string Type { get; set; }
-
-        /// <summary>
-        /// Represents how many of this product remain
-        /// </summary>
-        public int Quantity { get; set; }
-
-        /// <summary>
-        /// Creates a new product/ product constructor
+        /// Initializes a new instance of the <see cref="Product"/> class.
         /// </summary>
         /// <param name="name">name of the product</param>
         /// <param name="price">price of the product</param>
@@ -45,5 +25,24 @@ namespace Capstone.Classes
             this.Quantity = defaultQuantity;
         }
 
+        /// <summary>
+        /// Gets or sets the name of the product
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the price of the product
+        /// </summary>
+        public decimal Price { get; set; }
+
+        /// <summary>
+        /// Gets or sets the snack type. (chip, candy, drink, and gum)
+        /// </summary>
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets how many of this product remain
+        /// </summary>
+        public int Quantity { get; set; }
     }
 }
