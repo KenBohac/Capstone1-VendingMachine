@@ -35,7 +35,7 @@ namespace Capstone.Classes
         /// <summary>
         /// Gets or sets dictionary associating the slot ID with a Product. Represents current inventory.
         /// </summary>
-        public Dictionary<string, Product> Inventory { get; set; }
+        public Dictionary<string, VendingMachineSlot> Inventory { get; set; }
 
         /// <summary>
         /// Adds money to current balance.
@@ -53,13 +53,14 @@ namespace Capstone.Classes
         /// <param name="slotID">Slot ID of product.</param>
         public void GiveProduct(string slotID)
         {
-            Product product = this.Inventory[slotID];
+            VendingMachineSlot vms = this.Inventory[slotID];
+            Product product = vms.HeldProduct;
 
             if (this.CurrentBalance >= product.Price)
             {
                 string logAction = product.Name + " " + slotID.ToUpper();
 
-                product.Quantity--;
+                vms.Quantity--;
                 this.CurrentBalance -= product.Price;
                 this.LogAction(logAction, this.CurrentBalance + product.Price, this.CurrentBalance);
                 this.ProductsPurchased.Add(product);
@@ -117,9 +118,9 @@ namespace Capstone.Classes
         /// loads inventory from external file into new vending machine
         /// </summary>
         /// <returns>dictionary representing product slotId's/locations and Products</returns>
-        private Dictionary<string, Product> GetStock()
+        private Dictionary<string, VendingMachineSlot> GetStock()
         {
-            Dictionary<string, Product> inv = new Dictionary<string, Product>();
+            Dictionary<string, VendingMachineSlot> inv = new Dictionary<string, VendingMachineSlot>();
 
             // read in stock from external file line by line; split up csv's, assigning to
             // variables, and assigning them to key-value pairs in dictionary
@@ -136,7 +137,7 @@ namespace Capstone.Classes
                         decimal productPrice = decimal.Parse(slotIDNamePriceType[2]);
                         string productType = slotIDNamePriceType[3];
 
-                        inv.Add(slotID, new Product(productName, productPrice, productType));
+                        inv.Add(slotID, new VendingMachineSlot(new Product(productName, productPrice, productType)));
                     }
                 }
             }

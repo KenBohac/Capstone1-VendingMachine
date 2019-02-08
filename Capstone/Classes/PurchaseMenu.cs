@@ -157,11 +157,12 @@ namespace Capstone.Classes
                 return;
             }
 
-            // Set product from user input
-            Product product = this.VM.Inventory[choice];
+            // Set VendingMachineSlot and product from user input
+            VendingMachineSlot vms = this.VM.Inventory[choice];
+            Product product = vms.HeldProduct;
 
             // IF product is SOLD OUT
-            if (product.Quantity < 1)
+            if (vms.Quantity < 1)
             {
                 // PROMPT user product SOLD OUT
                 Console.WriteLine("Item is SOLD OUT. Press any key to try again.");

@@ -70,16 +70,19 @@ namespace Capstone.Classes
             // FOREACH loop per product in Inventory
             foreach (string key in this.VM.Inventory.Keys)
             {
+                VendingMachineSlot vms = this.VM.Inventory[key];
+                Product product = vms.HeldProduct;
+
                 // IF this product is in stock
                 if (this.VM.Inventory[key].Quantity > 0)
                 {
-                    Console.WriteLine($"{key.ToUpper().PadLeft(4)} - {this.VM.Inventory[key].Name.PadRight(22)} - ${this.VM.Inventory[key].Price.ToString().PadRight(7):C2} - {this.VM.Inventory[key].Quantity}");
+                    Console.WriteLine($"{key.ToUpper().PadLeft(4)} - {product.Name.PadRight(22)} - ${product.Price.ToString().PadRight(7):C2} - {vms.Quantity}");
                 }
 
                 // ELSE the product is SOLD OUT
                 else
                 {
-                    Console.WriteLine($"{key.ToUpper().PadLeft(4)} - {this.VM.Inventory[key].Name.PadRight(22)} - ${this.VM.Inventory[key].Price.ToString().PadRight(7):C2}SOLD OUT");
+                    Console.WriteLine($"{key.ToUpper().PadLeft(4)} - {product.Name.PadRight(22)} - ${product.Price.ToString().PadRight(7):C2}SOLD OUT");
                 }
             }
 
