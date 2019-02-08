@@ -87,7 +87,8 @@ namespace Capstone.Classes
 
            
         }
-        
+        //Write the log of user-machine action to external file, log.txt,
+        //according to given format
         private void LogAction(string action, decimal startingBalance, decimal endingBalance)
         {
             // Try-Catch to check for I/O exceptions
@@ -111,6 +112,8 @@ namespace Capstone.Classes
             Dictionary<string, Product> inv = new Dictionary<string, Product>();
 
             // GetStock
+            //read in stock from external file; split up csv's, assigning to 
+            //variables, and assigning them to key-value pairs in dictionary
             try
             {
                 using (StreamReader sr = new StreamReader(@"vendingmachine.csv"))
@@ -125,7 +128,7 @@ namespace Capstone.Classes
                         string productType = slotIDNamePriceType[3];
 
                         inv.Add(slotID, new Product(productName, productPrice, productType));
-                        Console.WriteLine($"{ slotID}: {productName}");
+                        
                     }
                 }
                 //Console.ReadLine();
@@ -141,7 +144,8 @@ namespace Capstone.Classes
         }
 
         private int[] CalculateChange()
-        {
+        {//Calculate CurrentBalance remaining from user's deposit 
+        //after the purhase  in form of quarters, dimes, nickels
             int quarters = (int)(this.CurrentBalance / 0.25M);
             int dimes = (int)((this.CurrentBalance % 0.25M) / 0.1M);
             int nickels = (int)(((this.CurrentBalance % 0.25M) % 0.1M) / 0.05M);
