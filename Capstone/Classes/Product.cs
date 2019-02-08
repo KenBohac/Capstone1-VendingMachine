@@ -30,11 +30,11 @@ namespace Capstone.Classes
         public int Quantity { get; set; }
 
         /// <summary>
-        /// Creates a new product
+        /// Creates a new product/ product constructor
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="price"></param>
-        /// <param name="type"></param>
+        /// <param name="name">name of the product</param>
+        /// <param name="price">price of the product</param>
+        /// <param name="type">type of the product</param>
         public Product(string name, decimal price, string type)
         {
             int defaultQuantity = 5;
@@ -42,7 +42,7 @@ namespace Capstone.Classes
             this.Name = name;
             this.Price = price;
             this.Type = type;
-            this.Quantity = defaultQuantity ;
+            this.Quantity = defaultQuantity;
         }
 
     }

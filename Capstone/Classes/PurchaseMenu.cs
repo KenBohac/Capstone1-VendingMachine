@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Capstone.Classes
-{/// <summary>
-/// represents a purchase menu of a vending machine
-/// </summary>
+{
+    /// <summary>
+    /// represents a purchase menu of a vending machine
+    /// </summary>
     public class PurchaseMenu
     {
         /// <summary>
@@ -17,17 +18,19 @@ namespace Capstone.Classes
         /// <summary>
         /// constructor for a purchase menu
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="vm">vending machine using this menu</param>
         public PurchaseMenu(VendingMachine vm)
         {
             this.VM = vm;
             this.Display();
         }
+
         /// <summary>
-        /// displays the purchase menu itself 
+        /// displays the purchase menu itself
         /// </summary>
         public void Display()
         {
+            //hold purchase menu on console until user acts/breaks
             while (true)
             {
                 Console.Clear();
@@ -36,6 +39,7 @@ namespace Capstone.Classes
                 Console.WriteLine("(3) Finish Transaction");
                 Console.WriteLine("(Q) Quit to Main Menu");
                 Console.WriteLine($"Current Money Provided: {this.VM.CurrentBalance:C2}");
+                Console.WriteLine();
                 Console.Write("> Pick One: ");
 
                 string choice = Console.ReadLine();
@@ -49,18 +53,19 @@ namespace Capstone.Classes
                     this.GetProduct();
                 }
                 else if (choice == "3")
-                  //current vending machine calls FinishTransaction
+                //current vending machine calls FinishTransaction
 
                 {
-                    
-                    int[] change= this.VM.FinishTransaction();
-                    //calling dispense message method and passing in
-                    //the products purchased info for this particular
+
+                    int[] change = this.VM.FinishTransaction();
+                    //calling dispense message method for this particular
                     //vending machine
-                    this.DispenseMessage(this.VM.ProductsPurchased);
+                    this.DispenseMessage();
                     Console.WriteLine();
                     Console.WriteLine($"Your Change: {change[0]} quarters, {change[1]} dimes, and {change[2]} nickels.");
-                    break;
+                    Console.WriteLine("Press any key to return to Main Menu.");
+                    Console.ReadKey();
+                    break; 
                 }
                 else if (choice.ToLower() == "q")
                 {
@@ -68,26 +73,32 @@ namespace Capstone.Classes
                 }
                 else
                 {
-                    Console.WriteLine("Invalid Input. Try Again.");
+                    Console.WriteLine("Invalid Input. Try Again. Press any key to continue.");
+                    Console.ReadKey();
                 }
             }
         }
+
         //menu for method to get money desposited by the user, 
         //passing in the menu selection number, set up within
         //a while loop (ends with user selection action)
+
+        /// <summary>
+        /// initiates the menu to get money from the user
+        /// </summary>
         public void GetMoney()
         {
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("How much are you depositing?");
                 Console.WriteLine($"Current Money Provided: {this.VM.CurrentBalance:C2}");
                 Console.WriteLine("(1) $1.00");
                 Console.WriteLine("(2) $2.00");
                 Console.WriteLine("(5) $5.00");
                 Console.WriteLine("(10) $10.00");
                 Console.WriteLine("(Q) Quit");
-
+                Console.WriteLine("How much are you depositing?");
+                Console.WriteLine();
                 string choice = Console.ReadLine();
 
                 if (choice == "1")
@@ -112,17 +123,22 @@ namespace Capstone.Classes
                 }
                 else
                 {
-                    Console.WriteLine("Invalid Input. Try Again.");
+                    Console.WriteLine("Invalid Input. Press any key to try again.");
+                    Console.ReadKey();
                 }
             }
         }
         //method to get product's slotID from user
+        /// <summary>
+        /// initiates menu to get product from user
+        /// </summary>
         public void GetProduct()
         {
             Console.Clear();
             Console.WriteLine("Enter a slotID for the product you would like to purchase?");
             Console.WriteLine("(Q) Quit to Purchase Menu");
-
+            Console.WriteLine();
+            Console.WriteLine("> Slot ID: ");
             string choice = Console.ReadLine();
 
             // IF the user wants to return to main menu
@@ -136,8 +152,8 @@ namespace Capstone.Classes
             if (!this.VM.Inventory.ContainsKey(choice))
             {
                 // THEN prompt user invalid input
-                Console.WriteLine("Invalid slotID. Try Again");
-                Console.ReadLine();
+                Console.WriteLine("Invalid slotID. Press any key to try again.");
+                Console.ReadKey();
                 return;
             }
 
@@ -148,16 +164,16 @@ namespace Capstone.Classes
             if (product.Quantity < 1)
             {
                 // PROMPT user product SOLD OUT
-                Console.WriteLine("Item is SOLD OUT. Try again.");
-                Console.ReadLine();
+                Console.WriteLine("Item is SOLD OUT. Press any key to try again.");
+                Console.ReadKey();
                 return;
             }
             // IF not enough money to purchase
             if (this.VM.CurrentBalance < product.Price)
             {
                 // PROMPT user not enough money
-                Console.WriteLine("Not enough money to purchase. Try again.");
-                Console.ReadLine();
+                Console.WriteLine("Not enough money to purchase. Press any key to try again.");
+                Console.ReadKey();
                 return;
             }
 
@@ -165,12 +181,19 @@ namespace Capstone.Classes
             this.VM.GiveProduct(choice);
             return;
         }
+
         //method creates the message that displays a fun purchase-related message 
         //after purchase is made.  Pass in a list of Product Class, named products
-        public void DispenseMessage(List<Product> products)
-        {//loop through list, checking for produc.Type property and 
+
+        /// <summary>
+        /// method to show specific Yum statements specific to user's type of purchase
+        /// </summary>
+        /// <param name="products">,List of products purchased</param>
+        public void DispenseMessage()
+        {
+            //loop through list, checking for produc.Type property and 
             //then run through switch statement to assign proper type-specfic message.
-            foreach (Product product in products)
+            foreach (Product product in this.VM.ProductsPurchased)
             {
                 switch (product.Type.ToLower())
                 {
@@ -197,7 +220,7 @@ namespace Capstone.Classes
                         break;
                 }
             }
-            //empty out the list for this purchase
+            //empty out the List for this purchase
             this.VM.ProductsPurchased.Clear();
             Console.ReadLine();
 
