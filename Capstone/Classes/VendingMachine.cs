@@ -16,7 +16,7 @@ namespace Capstone.Classes
         /// </summary>
         public VendingMachine()
         {
-            IReaderWriter rw = new FileHandler(this);
+            IReaderWriter rw = new FileHandler();
             this.RW = rw;
             this.Inventory = this.RW.GetStock();
             this.CurrentBalance = 0;
@@ -67,7 +67,6 @@ namespace Capstone.Classes
                 vms.Quantity--;
                 this.CurrentBalance -= product.Price;
                 this.RW.LogAction(logAction, this.CurrentBalance + product.Price, this.CurrentBalance);
-                this.RW.UpdateSalesReport(product);
                 this.ProductsPurchased.Add(product);
             }
         }
