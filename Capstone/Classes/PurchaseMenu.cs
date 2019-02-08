@@ -14,6 +14,7 @@ namespace Capstone.Classes
         /// constructor for a purchase menu
         /// </summary>
         /// <param name="vm">vending machine using this menu</param>
+        /// <param name="mm">the main menu creating this purchase menu</param>
         public PurchaseMenu(VendingMachine vm, MainMenu mm)
         {
             this.VM = vm;
@@ -46,6 +47,7 @@ namespace Capstone.Classes
                 Console.WriteLine("(2) Select Product");
                 Console.WriteLine("(3) Finish Transaction");
                 Console.WriteLine("(Q) Quit to Main Menu");
+                Console.WriteLine();
                 Console.WriteLine($"Current Money Provided: {this.VM.CurrentBalance:C2}");
                 Console.WriteLine();
                 Console.Write("> Pick One: ");
@@ -70,6 +72,7 @@ namespace Capstone.Classes
                     this.DispenseMessage();
                     Console.WriteLine();
                     Console.WriteLine($"Your Change: {change[0]} quarters, {change[1]} dimes, and {change[2]} nickels.");
+                    Console.WriteLine();
                     Console.WriteLine("Press any key to return to Main Menu.");
                     Console.ReadKey();
                     break;
@@ -171,7 +174,8 @@ namespace Capstone.Classes
                 if (!this.VM.Inventory.ContainsKey(choice))
                 {
                     // THEN prompt user invalid input
-                    Console.WriteLine("Invalid slotID. Press any key to try again.");
+                    Console.WriteLine();
+                    Console.WriteLine("Invalid slotID. Press any key to return to Purchase Menu.");
                     Console.ReadKey();
                     return;
                 }
@@ -184,7 +188,8 @@ namespace Capstone.Classes
                 if (vms.Quantity < 1)
                 {
                     // PROMPT user product SOLD OUT
-                    Console.WriteLine("Item is SOLD OUT. Press any key to try again.");
+                    Console.WriteLine();
+                    Console.WriteLine("Item is SOLD OUT. Press any key to return to Purchase Menu.");
                     Console.ReadKey();
                     return;
                 }
@@ -193,7 +198,8 @@ namespace Capstone.Classes
                 if (this.VM.CurrentBalance < product.Price)
                 {
                     // PROMPT user not enough money
-                    Console.WriteLine("Not enough money to purchase. Press any key to try again.");
+                    Console.WriteLine();
+                    Console.WriteLine("Not enough money to purchase. Press any key to return to Purchase Menu.");
                     Console.ReadKey();
                     return;
                 }
