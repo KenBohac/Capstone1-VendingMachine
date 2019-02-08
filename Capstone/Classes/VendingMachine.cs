@@ -147,7 +147,8 @@ namespace Capstone.Classes
                 // or datatype mismatch errors
                 Console.WriteLine("Umbrella Corp Critical Error: Could not Load Inventory");
                 Console.WriteLine("Check correct file name and location.");
-                Console.ReadLine();
+                Console.WriteLine("Press any key to continue.");
+                Console.ReadKey();
             }
 
             return inv;

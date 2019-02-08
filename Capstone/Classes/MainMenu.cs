@@ -35,6 +35,8 @@ namespace Capstone.Classes
             {
                 // CLEAR console followed by display options
                 Console.Clear();
+                Console.WriteLine("Main Menu");
+                Console.WriteLine("-------------");
                 Console.WriteLine("(1) Display Vending Machine Items");
                 Console.WriteLine("(2) Purchase");
                 Console.WriteLine();
@@ -50,7 +52,7 @@ namespace Capstone.Classes
                 else if (choice == "2")
                 {
                     // Instantiate PurchaseMenu and pass to current vending machine
-                    PurchaseMenu pm = new PurchaseMenu(this.VM);
+                    PurchaseMenu pm = new PurchaseMenu(this.VM, this);
                 }
                 else
                 {
@@ -65,7 +67,10 @@ namespace Capstone.Classes
         public void DisplayProducts()
         {
             // Display Header categories
+            Console.Clear();
+            Console.WriteLine();
             Console.WriteLine("SlotID" + "Snack".PadLeft(10) + "Price".PadLeft(21) + "Quantity".PadLeft(11));
+            Console.WriteLine();
 
             // FOREACH loop per product in Inventory
             foreach (string key in this.VM.Inventory.Keys)
@@ -87,7 +92,9 @@ namespace Capstone.Classes
             }
 
             // Wait for user to continue
-            Console.ReadLine();
+            Console.WriteLine();
+            Console.WriteLine("Press any key to return to Menu.");
+            Console.ReadKey();
         }
     }
 }

@@ -14,17 +14,23 @@ namespace Capstone.Classes
         /// constructor for a purchase menu
         /// </summary>
         /// <param name="vm">vending machine using this menu</param>
-        public PurchaseMenu(VendingMachine vm)
+        public PurchaseMenu(VendingMachine vm, MainMenu mm)
         {
             this.VM = vm;
+            this.MM = mm;
             this.Display();
         }
 
         /// <summary>
-        /// Gets or sets Vending machine which is currently running the
+        /// Gets Vending machine which is currently running the
         /// purchase menu
         /// </summary>
-        public VendingMachine VM { get; set; }
+        public VendingMachine VM { get; }
+
+        /// <summary>
+        /// Gets MainMenu this purchase menu was called from
+        /// </summary>
+        public MainMenu MM { get; }
 
         /// <summary>
         /// displays the purchase menu itself
@@ -35,6 +41,8 @@ namespace Capstone.Classes
             while (true)
             {
                 Console.Clear();
+                Console.WriteLine("Purchase Menu");
+                Console.WriteLine("------------------------");
                 Console.WriteLine("(1) Feed Money");
                 Console.WriteLine("(2) Select Product");
                 Console.WriteLine("(3) Finish Transaction");
@@ -91,14 +99,17 @@ namespace Capstone.Classes
             while (true)
             {
                 Console.Clear();
+                Console.WriteLine();
                 Console.WriteLine($"Current Money Provided: {this.VM.CurrentBalance:C2}");
+                Console.WriteLine();
                 Console.WriteLine("(1) $1.00");
                 Console.WriteLine("(2) $2.00");
                 Console.WriteLine("(5) $5.00");
                 Console.WriteLine("(10) $10.00");
                 Console.WriteLine("(Q) Quit");
-                Console.WriteLine("How much are you depositing?");
                 Console.WriteLine();
+                Console.Write("How much are you depositing? > $");
+
                 string choice = Console.ReadLine();
 
                 if (choice == "1")
@@ -134,54 +145,64 @@ namespace Capstone.Classes
         /// </summary>
         public void GetProduct()
         {
-            Console.Clear();
-            Console.WriteLine("Enter a slotID for the product you would like to purchase?");
-            Console.WriteLine("(Q) Quit to Purchase Menu");
-            Console.WriteLine();
-            Console.WriteLine("> Slot ID: ");
-            string choice = Console.ReadLine();
-
-            // IF the user wants to return to main menu
-            if (choice.ToLower() == "q")
+            while (true)
             {
-                // BREAK out of GetProduct to return
+                Console.Clear();
+                Console.WriteLine("Enter a slotID for the product you would like to purchase?");
+                Console.WriteLine("(1) Display Products");
+                Console.WriteLine("(Q) Quit to Purchase Menu");
+                Console.WriteLine();
+                Console.Write("> Slot ID: ");
+                string choice = Console.ReadLine();
+
+                // IF the user wants to return to purchase menu
+                if (choice.ToLower() == "q")
+                {
+                    // BREAK out of GetProduct to return
+                    break;
+                }
+
+                if (choice == "1")
+                {
+                    this.MM.DisplayProducts();
+                    continue;
+                }
+
+                // IF the product does not exist in inventory
+                if (!this.VM.Inventory.ContainsKey(choice))
+                {
+                    // THEN prompt user invalid input
+                    Console.WriteLine("Invalid slotID. Press any key to try again.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                // Set VendingMachineSlot and product from user input
+                VendingMachineSlot vms = this.VM.Inventory[choice];
+                Product product = vms.HeldProduct;
+
+                // IF product is SOLD OUT
+                if (vms.Quantity < 1)
+                {
+                    // PROMPT user product SOLD OUT
+                    Console.WriteLine("Item is SOLD OUT. Press any key to try again.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                // IF not enough money to purchase
+                if (this.VM.CurrentBalance < product.Price)
+                {
+                    // PROMPT user not enough money
+                    Console.WriteLine("Not enough money to purchase. Press any key to try again.");
+                    Console.ReadKey();
+                    return;
+                }
+
+                // Purchase product successful
+                this.VM.GiveProduct(choice);
                 return;
             }
-
-            // IF the product does not exist in inventory
-            if (!this.VM.Inventory.ContainsKey(choice))
-            {
-                // THEN prompt user invalid input
-                Console.WriteLine("Invalid slotID. Press any key to try again.");
-                Console.ReadKey();
-                return;
-            }
-
-            // Set VendingMachineSlot and product from user input
-            VendingMachineSlot vms = this.VM.Inventory[choice];
-            Product product = vms.HeldProduct;
-
-            // IF product is SOLD OUT
-            if (vms.Quantity < 1)
-            {
-                // PROMPT user product SOLD OUT
-                Console.WriteLine("Item is SOLD OUT. Press any key to try again.");
-                Console.ReadKey();
-                return;
-            }
-
-            // IF not enough money to purchase
-            if (this.VM.CurrentBalance < product.Price)
-            {
-                // PROMPT user not enough money
-                Console.WriteLine("Not enough money to purchase. Press any key to try again.");
-                Console.ReadKey();
-                return;
-            }
-
-            // Purchase product successful
-            this.VM.GiveProduct(choice);
-            return;
         }
 
         // method creates the message that displays a fun purchase-related message
@@ -196,6 +217,7 @@ namespace Capstone.Classes
             // then run through switch statement to assign proper type-specfic message.
             foreach (Product product in this.VM.ProductsPurchased)
             {
+                Console.WriteLine();
                 switch (product.Type.ToLower())
                 {
                     case "chip":
