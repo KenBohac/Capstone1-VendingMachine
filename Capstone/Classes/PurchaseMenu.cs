@@ -10,12 +10,7 @@ namespace Capstone.Classes
     public class PurchaseMenu
     {
         /// <summary>
-        /// Vending machine which is currently running the 
-        /// purchase menu
-        /// </summary>
-        public VendingMachine VM { get; set; }
-
-        /// <summary>
+        /// Initializes a new instance of the <see cref="PurchaseMenu"/> class.
         /// constructor for a purchase menu
         /// </summary>
         /// <param name="vm">vending machine using this menu</param>
@@ -26,11 +21,17 @@ namespace Capstone.Classes
         }
 
         /// <summary>
+        /// Gets or sets Vending machine which is currently running the
+        /// purchase menu
+        /// </summary>
+        public VendingMachine VM { get; set; }
+
+        /// <summary>
         /// displays the purchase menu itself
         /// </summary>
         public void Display()
         {
-            //hold purchase menu on console until user acts/breaks
+            // hold purchase menu on console until user acts/breaks
             while (true)
             {
                 Console.Clear();
@@ -53,19 +54,18 @@ namespace Capstone.Classes
                     this.GetProduct();
                 }
                 else if (choice == "3")
-                //current vending machine calls FinishTransaction
-
                 {
-
+                    // current vending machine calls FinishTransaction
                     int[] change = this.VM.FinishTransaction();
-                    //calling dispense message method for this particular
-                    //vending machine
+
+                    // calling dispense message method for this particular
+                    // vending machine
                     this.DispenseMessage();
                     Console.WriteLine();
                     Console.WriteLine($"Your Change: {change[0]} quarters, {change[1]} dimes, and {change[2]} nickels.");
                     Console.WriteLine("Press any key to return to Main Menu.");
                     Console.ReadKey();
-                    break; 
+                    break;
                 }
                 else if (choice.ToLower() == "q")
                 {
@@ -79,9 +79,9 @@ namespace Capstone.Classes
             }
         }
 
-        //menu for method to get money desposited by the user, 
-        //passing in the menu selection number, set up within
-        //a while loop (ends with user selection action)
+        // menu for method to get money desposited by the user,
+        // passing in the menu selection number, set up within
+        // a while loop (ends with user selection action)
 
         /// <summary>
         /// initiates the menu to get money from the user
@@ -128,7 +128,7 @@ namespace Capstone.Classes
                 }
             }
         }
-        //method to get product's slotID from user
+
         /// <summary>
         /// initiates menu to get product from user
         /// </summary>
@@ -168,6 +168,7 @@ namespace Capstone.Classes
                 Console.ReadKey();
                 return;
             }
+
             // IF not enough money to purchase
             if (this.VM.CurrentBalance < product.Price)
             {
@@ -182,17 +183,16 @@ namespace Capstone.Classes
             return;
         }
 
-        //method creates the message that displays a fun purchase-related message 
-        //after purchase is made.  Pass in a list of Product Class, named products
+        // method creates the message that displays a fun purchase-related message
+        // after purchase is made.  Pass in a list of Product Class, named products
 
         /// <summary>
         /// method to show specific Yum statements specific to user's type of purchase
         /// </summary>
-        /// <param name="products">,List of products purchased</param>
         public void DispenseMessage()
         {
-            //loop through list, checking for produc.Type property and 
-            //then run through switch statement to assign proper type-specfic message.
+            // loop through list, checking for produc.Type property and
+            // then run through switch statement to assign proper type-specfic message.
             foreach (Product product in this.VM.ProductsPurchased)
             {
                 switch (product.Type.ToLower())
@@ -220,10 +220,10 @@ namespace Capstone.Classes
                         break;
                 }
             }
-            //empty out the List for this purchase
+
+            // empty out the List for this purchase
             this.VM.ProductsPurchased.Clear();
             Console.ReadLine();
-
         }
     }
 }
