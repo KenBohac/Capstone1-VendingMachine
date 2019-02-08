@@ -10,15 +10,19 @@ namespace Capstone.Classes
     public class VendingMachineSlot
     {
         /// <summary>
+        /// Starting quantity for the slot.
+        /// </summary>
+        private const int DefaultQuantity = 5;
+
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="VendingMachineSlot"/> class.
         /// </summary>
         /// <param name="product">the product put into this vending machine slot</param>
         public VendingMachineSlot(Product product)
         {
-            int maxQuantity = 5;
-
             this.HeldProduct = product;
-            this.Quantity = maxQuantity;
+            this.Quantity = DefaultQuantity;
         }
 
         /// <summary>

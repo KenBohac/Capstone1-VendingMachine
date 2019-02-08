@@ -7,13 +7,6 @@ namespace Capstone.Classes
 {
     public class FileHandler
     {
-        public FileHandler(VendingMachine vm)
-        {
-            this.VM = vm;
-        }
-
-        public VendingMachine VM { get; }
-
         public Dictionary<string, VendingMachineSlot> GetStock()
         {
             Dictionary<string, VendingMachineSlot> inv = new Dictionary<string, VendingMachineSlot>();
