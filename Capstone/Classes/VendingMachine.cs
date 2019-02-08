@@ -16,7 +16,9 @@ namespace Capstone.Classes
         /// </summary>
         public VendingMachine()
         {
-            this.Inventory = this.GetStock();
+            FileHandler fh = new FileHandler(this);
+            this.FH = fh;
+            this.Inventory = fh.GetStock();
             this.CurrentBalance = 0;
             this.ProductsPurchased = new List<Product>();
         }
@@ -37,6 +39,8 @@ namespace Capstone.Classes
         /// </summary>
         public Dictionary<string, VendingMachineSlot> Inventory { get; set; }
 
+        public FileHandler FH { get; }
+
         /// <summary>
         /// Adds money to current balance.
         /// </summary>
@@ -44,7 +48,7 @@ namespace Capstone.Classes
         public void DepositMoney(decimal money)
         {
             this.CurrentBalance += money;
-            this.LogAction("FEED MONEY:", money, this.CurrentBalance);
+            this.FH.LogAction("FEED MONEY:", money, this.CurrentBalance);
         }
 
         /// <summary>
@@ -62,7 +66,7 @@ namespace Capstone.Classes
 
                 vms.Quantity--;
                 this.CurrentBalance -= product.Price;
-                this.LogAction(logAction, this.CurrentBalance + product.Price, this.CurrentBalance);
+                this.FH.LogAction(logAction, this.CurrentBalance + product.Price, this.CurrentBalance);
                 this.ProductsPurchased.Add(product);
             }
         }
@@ -79,80 +83,12 @@ namespace Capstone.Classes
             // LogAction i. e., change given.
             // Adds a "give change msg" and current balance to Log.txt output
             // to record action
-            this.LogAction("GIVE CHANGE:", this.CurrentBalance, 0.00M);
+            this.FH.LogAction("GIVE CHANGE:", this.CurrentBalance, 0.00M);
 
             // Set CurrentBalance to 0.00
             this.CurrentBalance = 0;
             return change;
         }
-
-        /// <summary>
-        /// Write the log of user-machine action to external file, log.txt,
-        /// according to given format
-        /// </summary>
-        /// <param name="action">user action, e. g. deposit, purchase, change given</param>
-        /// <param name="startingBalance">vending machine's starting balance</param>
-        /// <param name="endingBalance">vending machine's ending balance</param>
-        private void LogAction(string action, decimal startingBalance, decimal endingBalance)
-        {
-            // TRY-CATCH to check for I/O exceptions
-            try
-            {
-                // open up new StreamWriter for log.txt file and allow appending
-                using (StreamWriter sw = new StreamWriter("log.txt", true))
-                {
-                    sw.WriteLine($"{System.DateTime.Now}  {action}  {startingBalance:C2}  {endingBalance:C2}");
-                }
-            }
-
-            // Catch I/O exceptions, e. g. file not found
-            catch (IOException)
-            {
-                Console.WriteLine($"Umbrella Corp.: Error with Log.txt file. Action(s) may not have been recorded.");
-                Console.WriteLine("Press any key to continue.");
-                Console.ReadKey();
-            }
-        }
-
-        /// <summary>
-        /// loads inventory from external file into new vending machine
-        /// </summary>
-        /// <returns>dictionary representing product slotId's/locations and Products</returns>
-        //private Dictionary<string, VendingMachineSlot> GetStock()
-        //{
-            //    Dictionary<string, VendingMachineSlot> inv = new Dictionary<string, VendingMachineSlot>();
-
-            //    // read in stock from external file line by line; split up csv's, assigning to
-            //    // variables, and assigning them to key-value pairs in dictionary
-            //    try
-            //    {
-            //        using (StreamReader sr = new StreamReader(@"vendingmachine.csv"))
-            //        {
-            //            while (!sr.EndOfStream)
-            //            {
-            //                string[] slotIDNamePriceType = sr.ReadLine().Split('|');
-
-            //                string slotID = slotIDNamePriceType[0].ToLower();
-            //                string productName = slotIDNamePriceType[1];
-            //                decimal productPrice = decimal.Parse(slotIDNamePriceType[2]);
-            //                string productType = slotIDNamePriceType[3];
-
-            //                inv.Add(slotID, new VendingMachineSlot(new Product(productName, productPrice, productType)));
-            //            }
-            //        }
-            //    }
-            //    catch (Exception)
-            //    {
-            //        // catch streamreader error, e. g. file not found,  Parse.ToDecimal() errors,
-            //        // or datatype mismatch errors
-            //        Console.WriteLine("Umbrella Corp Critical Error: Could not Load Inventory");
-            //        Console.WriteLine("Check correct file name and location.");
-            //        Console.WriteLine("Press any key to continue.");
-            //        Console.ReadKey();
-            //    }
-
-            //    return inv;
-        //}
 
         /// <summary>
         /// Calculates change based on current remaining balance
