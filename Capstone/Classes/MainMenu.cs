@@ -10,7 +10,18 @@ namespace Capstone.Classes
     public class MainMenu
     {
         /// <summary>
-        /// The vending machine on which this menu is operating
+        /// Initializes a new instance of the <see cref="MainMenu"/> class.
+        /// Create a new Main Menu for vending machine
+        /// </summary>
+        /// <param name="vm">Vending Machine using this menu.</param>
+        public MainMenu(VendingMachine vm)
+        {
+            this.VM = vm;
+            this.Display();
+        }
+
+        /// <summary>
+        /// Gets or sets the vending machine on which this menu is operating
         /// </summary>
         public VendingMachine VM { get; set; }
 
@@ -19,7 +30,7 @@ namespace Capstone.Classes
         /// </summary>
         public void Display()
         {
-            ///Main Menu presented to User
+            // Main Menu presented to User
             while (true)
             {
                 // CLEAR console followed by display options
@@ -33,7 +44,6 @@ namespace Capstone.Classes
                 string choice = Console.ReadLine();
 
                 if (choice == "1")
-
                 {
                     this.DisplayProducts();
                 }
@@ -65,6 +75,7 @@ namespace Capstone.Classes
                 {
                     Console.WriteLine($"{key.ToUpper().PadLeft(4)} - {this.VM.Inventory[key].Name.PadRight(22)} - ${this.VM.Inventory[key].Price.ToString().PadRight(7):C2} - {this.VM.Inventory[key].Quantity}");
                 }
+
                 // ELSE the product is SOLD OUT
                 else
                 {
@@ -74,16 +85,6 @@ namespace Capstone.Classes
 
             // Wait for user to continue
             Console.ReadLine();
-        }
-
-        /// <summary>
-        /// Create a new Main Menu for vending machine
-        /// </summary>
-        /// <param name="vm">Vending Machine using this menu.</param>
-        public MainMenu(VendingMachine vm)
-        {
-            this.VM = vm;
-            this.Display();
         }
     }
 }
