@@ -14,7 +14,6 @@ namespace Capstone.Classes
         /// </summary>
         private const int DefaultQuantity = 5;
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="VendingMachineSlot"/> class.
         /// </summary>

@@ -77,7 +77,7 @@ namespace Capstone.Classes
         /// <returns>int[] representing change due to user in quarters, dimes, and nickels</returns>
         public int[] FinishTransaction()
         {
-            // Calculate Change and show to console
+            // Calculate Change
             int[] change = this.CalculateChange();
 
             // LogAction i. e., change given.

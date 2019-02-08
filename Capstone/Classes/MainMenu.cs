@@ -20,9 +20,9 @@ namespace Capstone.Classes
         }
 
         /// <summary>
-        /// Gets or sets the vending machine on which this menu is operating
+        /// Gets the vending machine on which this menu is operating
         /// </summary>
-        public VendingMachine VM { get; set; }
+        public VendingMachine VM { get; }
 
         /// <summary>
         /// Writes out a option menu to the console
@@ -79,7 +79,7 @@ namespace Capstone.Classes
                 Product product = vms.HeldProduct;
 
                 // IF this product is in stock
-                if (this.VM.Inventory[key].Quantity > 0)
+                if (vms.Quantity > 0)
                 {
                     Console.WriteLine($"{key.ToUpper().PadLeft(4)} - {product.Name.PadRight(22)} - ${product.Price.ToString().PadRight(7):C2} - {vms.Quantity}");
                 }
