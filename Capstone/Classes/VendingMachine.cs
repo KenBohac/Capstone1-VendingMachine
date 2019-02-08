@@ -118,41 +118,41 @@ namespace Capstone.Classes
         /// loads inventory from external file into new vending machine
         /// </summary>
         /// <returns>dictionary representing product slotId's/locations and Products</returns>
-        private Dictionary<string, VendingMachineSlot> GetStock()
-        {
-            Dictionary<string, VendingMachineSlot> inv = new Dictionary<string, VendingMachineSlot>();
+        //private Dictionary<string, VendingMachineSlot> GetStock()
+        //{
+            //    Dictionary<string, VendingMachineSlot> inv = new Dictionary<string, VendingMachineSlot>();
 
-            // read in stock from external file line by line; split up csv's, assigning to
-            // variables, and assigning them to key-value pairs in dictionary
-            try
-            {
-                using (StreamReader sr = new StreamReader(@"vendingmachine.csv"))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        string[] slotIDNamePriceType = sr.ReadLine().Split('|');
+            //    // read in stock from external file line by line; split up csv's, assigning to
+            //    // variables, and assigning them to key-value pairs in dictionary
+            //    try
+            //    {
+            //        using (StreamReader sr = new StreamReader(@"vendingmachine.csv"))
+            //        {
+            //            while (!sr.EndOfStream)
+            //            {
+            //                string[] slotIDNamePriceType = sr.ReadLine().Split('|');
 
-                        string slotID = slotIDNamePriceType[0].ToLower();
-                        string productName = slotIDNamePriceType[1];
-                        decimal productPrice = decimal.Parse(slotIDNamePriceType[2]);
-                        string productType = slotIDNamePriceType[3];
+            //                string slotID = slotIDNamePriceType[0].ToLower();
+            //                string productName = slotIDNamePriceType[1];
+            //                decimal productPrice = decimal.Parse(slotIDNamePriceType[2]);
+            //                string productType = slotIDNamePriceType[3];
 
-                        inv.Add(slotID, new VendingMachineSlot(new Product(productName, productPrice, productType)));
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // catch streamreader error, e. g. file not found,  Parse.ToDecimal() errors,
-                // or datatype mismatch errors
-                Console.WriteLine("Umbrella Corp Critical Error: Could not Load Inventory");
-                Console.WriteLine("Check correct file name and location.");
-                Console.WriteLine("Press any key to continue.");
-                Console.ReadKey();
-            }
+            //                inv.Add(slotID, new VendingMachineSlot(new Product(productName, productPrice, productType)));
+            //            }
+            //        }
+            //    }
+            //    catch (Exception)
+            //    {
+            //        // catch streamreader error, e. g. file not found,  Parse.ToDecimal() errors,
+            //        // or datatype mismatch errors
+            //        Console.WriteLine("Umbrella Corp Critical Error: Could not Load Inventory");
+            //        Console.WriteLine("Check correct file name and location.");
+            //        Console.WriteLine("Press any key to continue.");
+            //        Console.ReadKey();
+            //    }
 
-            return inv;
-        }
+            //    return inv;
+        //}
 
         /// <summary>
         /// Calculates change based on current remaining balance
