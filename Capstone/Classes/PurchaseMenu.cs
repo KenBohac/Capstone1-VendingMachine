@@ -52,13 +52,14 @@ namespace Capstone.Classes
                   //current vending machine calls FinishTransaction
 
                 {
-
-                    this.VM.FinishTransaction();
+                    
+                    int[] change= this.VM.FinishTransaction();
                     //calling dispense message method and passing in
                     //the products purchased info for this particular
                     //vending machine
-                    this.DispenseMessage(this.VM.productsPurchased);
-
+                    this.DispenseMessage(this.VM.ProductsPurchased);
+                    Console.WriteLine();
+                    Console.WriteLine($"Your Change: {change[0]} quarters, {change[1]} dimes, and {change[2]} nickels.");
                     break;
                 }
                 else if (choice.ToLower() == "q")
@@ -197,7 +198,7 @@ namespace Capstone.Classes
                 }
             }
             //empty out the list for this purchase
-            this.VM.productsPurchased.Clear();
+            this.VM.ProductsPurchased.Clear();
             Console.ReadLine();
 
         }

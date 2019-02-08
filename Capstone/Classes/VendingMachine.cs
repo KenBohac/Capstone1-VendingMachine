@@ -14,7 +14,7 @@ namespace Capstone.Classes
         /// A list of successfully purchased products in a single transaction. 
         /// used in LogAction, generating and updating sales report, and in FinishTransaction()
         /// </summary>
-        public List<Product> productsPurchased { get; set; }
+        public List<Product> ProductsPurchased { get; set; }
 
         /// <summary>
         /// Current balance used for purchases
@@ -34,7 +34,7 @@ namespace Capstone.Classes
             this.Inventory = new Dictionary<string, Product>();
             this.Inventory = this.GetStock();
             this.CurrentBalance = 0;
-            this.productsPurchased = new List<Product>();
+            this.ProductsPurchased = new List<Product>();
         }
 
         /// <summary>
@@ -62,19 +62,18 @@ namespace Capstone.Classes
                 product.Quantity--;
                 this.CurrentBalance -= product.Price;
                 this.LogAction(logAction, CurrentBalance + product.Price, CurrentBalance);
-                this.productsPurchased.Add(product);
+                this.ProductsPurchased.Add(product);
             }
         }
 
         /// <summary>
         /// Dispense product and change, return to main menu, readies machine for next purchase.
         /// </summary>
-        public void FinishTransaction()
+        public int[] FinishTransaction()
         {
             //Calculate Change and show to console
             int[] change = this.CalculateChange();
-            Console.WriteLine();
-            Console.WriteLine($"Your Change: {change[0]} quarters, {change[1]} dimes, and {change[2]} nickels.");
+           
            
             //LogAction i. e., change given
 
@@ -84,7 +83,7 @@ namespace Capstone.Classes
             this.LogAction("GIVE CHANGE:", this.CurrentBalance, 0.00M);
             //Set CurrentBalance to 0.00
             this.CurrentBalance = 0;
-
+            return change; 
            
         }
         //Write the log of user-machine action to external file, log.txt,

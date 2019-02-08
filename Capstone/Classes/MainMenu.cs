@@ -70,7 +70,7 @@ namespace Capstone.Classes
                 // ELSE the product is SOLD OUT
                 else
                 {
-                    Console.WriteLine($"{key.ToUpper().PadLeft(4)} - {this.VM.Inventory[key].Name.PadRight(22)} - ${this.VM.Inventory[key].Price.ToString().PadRight(7):C2} -  SOLD OUT");
+                    Console.WriteLine($"{key.ToUpper().PadLeft(4)} - {this.VM.Inventory[key].Name.PadRight(22)} - ${this.VM.Inventory[key].Price.ToString().PadRight(7):C2}SOLD OUT");
                 }
 
             }
