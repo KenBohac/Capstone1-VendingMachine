@@ -80,15 +80,14 @@ namespace Capstone.Classes
             // to record action
             this.LogAction("GIVE CHANGE:", this.CurrentBalance, 0.00M);
 
-            //Set CurrentBalance to 0.00
+            // Set CurrentBalance to 0.00
             this.CurrentBalance = 0;
             return change;
         }
 
-
         /// <summary>
         /// Write the log of user-machine action to external file, log.txt,
-        ///according to given format
+        /// according to given format
         /// </summary>
         /// <param name="action">user action, e. g. deposit, purchase, change given</param>
         /// <param name="startingBalance">vending machine's starting balance</param>
@@ -98,20 +97,22 @@ namespace Capstone.Classes
             // TRY-CATCH to check for I/O exceptions
             try
             {
-                //open up new StreamWriter for log.txt file and allow appending
+                // open up new StreamWriter for log.txt file and allow appending
                 using (StreamWriter sw = new StreamWriter("log.txt", true))
                 {
                     sw.WriteLine($"{System.DateTime.Now}  {action}  {startingBalance:C2}  {endingBalance:C2}");
                 }
             }
-            //Catch I/O exceptions, e. g. file not found
-            catch (IOException ex)
+
+            // Catch I/O exceptions, e. g. file not found
+            catch (IOException)
             {
                 Console.WriteLine($"Umbrella Corp.: Error with Log.txt file. Action(s) may not have been recorded.");
                 Console.WriteLine("Press any key to continue.");
                 Console.ReadKey();
             }
         }
+
         /// <summary>
         /// loads inventory from external file into new vending machine
         /// </summary>
@@ -120,8 +121,8 @@ namespace Capstone.Classes
         {
             Dictionary<string, Product> inv = new Dictionary<string, Product>();
 
-            //read in stock from external file line by line; split up csv's, assigning to 
-            //variables, and assigning them to key-value pairs in dictionary
+            // read in stock from external file line by line; split up csv's, assigning to
+            // variables, and assigning them to key-value pairs in dictionary
             try
             {
                 using (StreamReader sr = new StreamReader(@"vendingmachine.csv"))
@@ -139,7 +140,7 @@ namespace Capstone.Classes
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // catch streamreader error, e. g. file not found,  Parse.ToDecimal() errors,
                 // or datatype mismatch errors
@@ -147,6 +148,7 @@ namespace Capstone.Classes
                 Console.WriteLine("Check correct file name and location.");
                 Console.ReadLine();
             }
+
             return inv;
         }
 
@@ -157,8 +159,8 @@ namespace Capstone.Classes
         ///  to be returned to user</returns>
         private int[] CalculateChange()
         {
-            //Calculate CurrentBalance remaining from user's deposit 
-            //after the purhase in form of quarters, dimes, nickels
+            // Calculate CurrentBalance remaining from user's deposit
+            // after the purhase in form of quarters, dimes, nickels
             int quarters = (int)(this.CurrentBalance / 0.25M);
             int dimes = (int)((this.CurrentBalance % 0.25M) / 0.1M);
             int nickels = (int)(((this.CurrentBalance % 0.25M) % 0.1M) / 0.05M);
