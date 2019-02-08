@@ -223,7 +223,6 @@ namespace Capstone.Classes
 
             // empty out the List for this purchase
             this.VM.ProductsPurchased.Clear();
-            Console.ReadLine();
         }
     }
 }
