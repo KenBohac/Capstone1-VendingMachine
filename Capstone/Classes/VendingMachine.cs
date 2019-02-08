@@ -16,9 +16,9 @@ namespace Capstone.Classes
         /// </summary>
         public VendingMachine()
         {
-            FileHandler fh = new FileHandler(this);
-            this.FH = fh;
-            this.Inventory = fh.GetStock();
+            IReaderWriter rw = new FileHandler();
+            this.RW = rw;
+            this.Inventory = this.RW.GetStock();
             this.CurrentBalance = 0;
             this.ProductsPurchased = new List<Product>();
         }
@@ -39,7 +39,7 @@ namespace Capstone.Classes
         /// </summary>
         public Dictionary<string, VendingMachineSlot> Inventory { get; set; }
 
-        public FileHandler FH { get; }
+        public IReaderWriter RW { get; }
 
         /// <summary>
         /// Adds money to current balance.
@@ -48,7 +48,7 @@ namespace Capstone.Classes
         public void DepositMoney(decimal money)
         {
             this.CurrentBalance += money;
-            this.FH.LogAction("FEED MONEY:", money, this.CurrentBalance);
+            this.RW.LogAction("FEED MONEY:", money, this.CurrentBalance);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Capstone.Classes
 
                 vms.Quantity--;
                 this.CurrentBalance -= product.Price;
-                this.FH.LogAction(logAction, this.CurrentBalance + product.Price, this.CurrentBalance);
+                this.RW.LogAction(logAction, this.CurrentBalance + product.Price, this.CurrentBalance);
                 this.ProductsPurchased.Add(product);
             }
         }
@@ -83,7 +83,7 @@ namespace Capstone.Classes
             // LogAction i. e., change given.
             // Adds a "give change msg" and current balance to Log.txt output
             // to record action
-            this.FH.LogAction("GIVE CHANGE:", this.CurrentBalance, 0.00M);
+            this.RW.LogAction("GIVE CHANGE:", this.CurrentBalance, 0.00M);
 
             // Set CurrentBalance to 0.00
             this.CurrentBalance = 0;

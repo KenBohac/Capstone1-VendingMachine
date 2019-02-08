@@ -17,7 +17,6 @@ namespace Capstone.Classes
         public MainMenu(VendingMachine vm)
         {
             this.VM = vm;
-            this.Display();
         }
 
         /// <summary>
@@ -53,6 +52,7 @@ namespace Capstone.Classes
                 {
                     // Instantiate PurchaseMenu and pass to current vending machine
                     PurchaseMenu pm = new PurchaseMenu(this.VM, this);
+                    pm.Display();
                 }
                 else
                 {

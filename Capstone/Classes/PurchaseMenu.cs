@@ -18,7 +18,6 @@ namespace Capstone.Classes
         {
             this.VM = vm;
             this.MM = mm;
-            this.Display();
         }
 
         /// <summary>
